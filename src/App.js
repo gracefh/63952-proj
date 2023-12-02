@@ -1,6 +1,7 @@
 import "./App.css";
 import SignInPage from "./pages/sign-in";
 import SignUpPage from "./pages/sign-up";
+import ArtUploadPage from "./pages/art-upload";
 
 function App() {
   return (
@@ -8,7 +9,8 @@ function App() {
     // (at least I think this is how it works)
 
     // <SignInPage />
-    <SignUpPage />
+    // <SignUpPage />
+    <ArtUploadPage />
   );
 }
 
