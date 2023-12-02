@@ -1,26 +1,14 @@
-import logo from "./logo.svg";
 import "./App.css";
-import ButtonUsage from "./components/example-button";
+import SignInPage from "./pages/sign-in";
+import SignUpPage from "./pages/sign-up";
 
 function App() {
   return (
-    <ButtonUsage />
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
+    // Routes for backend have not been set up yet, so for now just uncomment the component you want to see
+    // (at least I think this is how it works)
+
+    // <SignInPage />
+    <SignUpPage />
   );
 }
 
