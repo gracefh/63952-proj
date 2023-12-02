@@ -2,6 +2,7 @@ import "./App.css";
 import SignInPage from "./pages/sign-in";
 import SignUpPage from "./pages/sign-up";
 import ArtUploadPage from "./pages/art-upload";
+import ArtistListViewPage from "./pages/artist-list-view";
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
 
     // <SignInPage />
     // <SignUpPage />
-    <ArtUploadPage />
+    // <ArtUploadPage />
+    <ArtistListViewPage artistName={"Catherine"} />
   );
 }
 
