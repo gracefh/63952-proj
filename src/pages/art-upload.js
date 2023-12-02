@@ -68,7 +68,11 @@ export default function ArtUploadPage() {
               id="file-input"
             />
             <label htmlFor="file-input">
-              <Button variant="contained" component="span" sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                component="span"
+                sx={{ mt: 2, width: 500 }}
+              >
                 {selectedFiles.length > 0
                   ? `${selectedFiles.length} file${
                       selectedFiles.length > 1 ? "s" : ""
