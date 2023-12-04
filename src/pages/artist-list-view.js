@@ -58,10 +58,10 @@ export default function ArtistListViewPage({ artistName }) {
     setEditItem(item);
   };
 
-  const handleEdit = (newName) => {
+  const handleEdit = (newName, newPrice, newTags) => {
     setImages(
       images.map((item) =>
-        item.id === editItem.id ? { ...item, name: newName } : item
+        item.id === editItem.id ? { ...item, name: newName, price: newPrice, tags: newTags } : item
       )
     );
     setEditItem(null);
@@ -195,7 +195,7 @@ export default function ArtistListViewPage({ artistName }) {
               <Button onClick={() => setEditItem(null)} color="primary">
                 Cancel
               </Button>
-              <Button onClick={() => handleEdit(editItem.name)} color="primary">
+              <Button onClick={() => handleEdit(editItem.name, editItem.price, editItem.tags)} color="primary">
                 Save
               </Button>
             </DialogActions>
