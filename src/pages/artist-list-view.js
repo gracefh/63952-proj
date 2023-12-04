@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ArtListItem from "../components/art-list-item";
 import Navbar from "../components/navbar";
+import { useNavigate } from "react-router-dom";
+
 import {
   Typography,
   Button,
@@ -27,6 +29,7 @@ export default function ArtistListViewPage({ artistName }) {
   const [selectAllLabel, setSelectAllLabel] = useState("Select All");
 
   const pageCount = Math.ceil(images.length / itemsPerPage);
+  const navigate = useNavigate();
 
   const handleSelectToggle = () => {
     if (selectAll) {
@@ -61,7 +64,9 @@ export default function ArtistListViewPage({ artistName }) {
   const handleEdit = (newName, newPrice, newTags) => {
     setImages(
       images.map((item) =>
-        item.id === editItem.id ? { ...item, name: newName, price: newPrice, tags: newTags } : item
+        item.id === editItem.id
+          ? { ...item, name: newName, price: newPrice, tags: newTags }
+          : item
       )
     );
     setEditItem(null);
@@ -121,7 +126,11 @@ export default function ArtistListViewPage({ artistName }) {
               Delete Selected
             </Button>
           </Box>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate("/upload")}
+          >
             Upload Artworks
           </Button>
         </Box>
@@ -195,7 +204,12 @@ export default function ArtistListViewPage({ artistName }) {
               <Button onClick={() => setEditItem(null)} color="primary">
                 Cancel
               </Button>
-              <Button onClick={() => handleEdit(editItem.name, editItem.price, editItem.tags)} color="primary">
+              <Button
+                onClick={() =>
+                  handleEdit(editItem.name, editItem.price, editItem.tags)
+                }
+                color="primary"
+              >
                 Save
               </Button>
             </DialogActions>

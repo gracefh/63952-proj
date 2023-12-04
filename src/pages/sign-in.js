@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -12,12 +13,15 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
+import { AuthContext } from "../AuthContext";
+import Navbar from "../components/navbar";
 
 const defaultTheme = createTheme();
 
 export default function SignInPage() {
   const [error, setError] = React.useState("");
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,6 +42,7 @@ export default function SignInPage() {
       const result = await response.json();
 
       if (response.ok) {
+        setIsLoggedIn(true);
         if (result.isArtist) {
           navigate("/your-art");
         } else {
@@ -53,6 +58,7 @@ export default function SignInPage() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <Navbar />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

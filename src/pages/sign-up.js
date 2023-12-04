@@ -17,6 +17,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
+import Navbar from "../components/navbar";
 
 const defaultTheme = createTheme();
 
@@ -57,6 +58,7 @@ export default function SignUpPage() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <Navbar />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
