@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 import { Router, getExpressRouter } from "./framework/router";
 
-import { Art, User, WebSession } from "./app";
+import { Art, Cart, User, WebSession } from "./app";
 import { ArtDoc } from "./concepts/art";
 import { UserDoc } from "./concepts/user";
 import { WebSessionDoc } from "./concepts/websession";
@@ -28,7 +28,9 @@ class Routes {
   @Router.post("/users")
   async createUser(session: WebSessionDoc, firstName: string, lastName: string, email: string, password: string, isArtist: boolean) {
     WebSession.isLoggedOut(session);
-    return await User.create(firstName, lastName, email, password, isArtist);
+    const user = await User.create(firstName, lastName, email, password, isArtist);
+    Cart.create(user.user!._id);
+    return user;
   }
 
   @Router.patch("/users")
@@ -97,6 +99,14 @@ class Routes {
     await Art.isAuthor(user, _id);
     return Art.delete(_id);
   }
+
+  // CART
+  @Router.get("/cart")
+  async getUserCart(session: WebSessionDoc) {
+    const user = WebSession.getUser(session);
+    return await Cart.getByAuthor(user);
+  }
+
 }
 
 export default getExpressRouter(new Routes());

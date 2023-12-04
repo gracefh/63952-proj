@@ -10,7 +10,7 @@ export interface ArtDoc extends BaseDoc {
 }
 
 export default class ArtConcept {
-  public readonly artPieces = new DocCollection<ArtDoc>("posts");
+  public readonly artPieces = new DocCollection<ArtDoc>("artPieces");
 
   async create(author: ObjectId, title: string, link: string) {
     const _id = await this.artPieces.createOne({ author, title, link });
@@ -18,10 +18,10 @@ export default class ArtConcept {
   }
 
   async getArtPieces(query: Filter<ArtDoc>) {
-    const posts = await this.artPieces.readMany(query, {
+    const artPieces = await this.artPieces.readMany(query, {
       sort: { dateUpdated: -1 },
     });
-    return posts;
+    return artPieces;
   }
 
   async getByAuthor(author: ObjectId) {
