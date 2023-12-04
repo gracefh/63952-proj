@@ -35,7 +35,7 @@ export default function Navbar() {
       <Toolbar>
         {logoutError && (
           <Box
-            sx={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}
+            sx={{ flexGrow: 2.5, display: "flex", justifyContent: "flex-end" }}
           >
             <Alert severity="error" sx={{ mb: 1, mt: 1 }}>
               {logoutError}
@@ -44,9 +44,17 @@ export default function Navbar() {
         )}
         <Box sx={{ flexGrow: 1 }} />
         {isLoggedIn ? (
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
+          <>
+            <Button color="inherit" onClick={() => navigate("/select-art")}>
+              Browse All Art
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/your-art")}>
+              Your Art
+            </Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          </>
         ) : (
           <>
             <Button color="inherit" onClick={() => navigate("/sign-in")}>
