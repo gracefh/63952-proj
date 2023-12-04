@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 import { Router, getExpressRouter } from "./framework/router";
 
-import { Friend, Art, User, WebSession } from "./app";
+import { Art, User, WebSession } from "./app";
 import { ArtDoc } from "./concepts/art";
 import { UserDoc } from "./concepts/user";
 import { WebSessionDoc } from "./concepts/websession";
@@ -22,13 +22,13 @@ class Routes {
 
   @Router.get("/users/:username")
   async getUser(username: string) {
-    return await User.getUserByUsername(username);
+    return await User.getUserByEmail(username);
   }
 
   @Router.post("/users")
-  async createUser(session: WebSessionDoc, username: string, password: string, isArtist: boolean) {
+  async createUser(session: WebSessionDoc, firstName: string, lastName: string, email: string, password: string, isArtist: boolean) {
     WebSession.isLoggedOut(session);
-    return await User.create(username, password, isArtist);
+    return await User.create(firstName, lastName, email, password, isArtist);
   }
 
   @Router.patch("/users")
@@ -63,7 +63,7 @@ class Routes {
   async getArtPieces(author?: string) {
     let artPieces;
     if (author) {
-      const id = (await User.getUserByUsername(author))._id;
+      const id = (await User.getUserByEmail(author))._id;
       artPieces = await Art.getByAuthor(id);
     } else {
       artPieces = await Art.getArtPieces({});
