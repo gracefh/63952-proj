@@ -177,6 +177,28 @@ export default function ArtistListViewPage({ artistName }) {
                   setEditItem({ ...editItem, name: e.target.value })
                 }
               />
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Image Price"
+                type="text"
+                fullWidth
+                defaultValue={editItem.price}
+                onChange={(e) =>
+                  setEditItem({ ...editItem, price: e.target.value })
+                }
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Image Tags (separated by comma)"
+                type="text"
+                fullWidth
+                defaultValue={editItem.tags}
+                onChange={(e) =>
+                  setEditItem({ ...editItem, tags: e.target.value })
+                }
+              />
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setEditItem(null)} color="primary">

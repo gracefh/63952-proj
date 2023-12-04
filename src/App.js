@@ -13,8 +13,8 @@ function App() {
     // <SignInPage />
     // <SignUpPage />
     // <ArtUploadPage />
-    // <ArtistListViewPage artistName={"Catherine"} />
-    <SelectionPage />
+    <ArtistListViewPage artistName={"Catherine"} />
+    // <SelectionPage />
   );
 }
 
