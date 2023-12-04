@@ -20,9 +20,9 @@ class Routes {
     return await User.getUsers();
   }
 
-  @Router.get("/users/:username")
-  async getUser(username: string) {
-    return await User.getUserByEmail(username);
+  @Router.get("/users/:email")
+  async getUser(email: string) {
+    return await User.getUserByEmail(email);
   }
 
   @Router.post("/users")
@@ -55,6 +55,12 @@ class Routes {
   async logOut(session: WebSessionDoc) {
     WebSession.end(session);
     return { msg: "Logged out!" };
+  }
+
+  @Router.get("/users/is-artist/:email")
+  async isArtist(email: string) {
+    const u = await User.getUserByEmail(email);
+    return await User.isArtist(u._id);
   }
 
   // ART

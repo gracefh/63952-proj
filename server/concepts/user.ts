@@ -93,6 +93,14 @@ export default class UserConcept {
     }
   }
 
+  async isArtist(_id: ObjectId) {
+    const maybeUser = await this.users.readOne({ _id });
+    if (maybeUser === null) {
+      throw new NotFoundError(`User not found!`);
+    }
+    return maybeUser.isArtist === true;
+  }
+
   private async canCreate(email: string, password: string) {
     if (!email || !password) {
       throw new BadValuesError("Username and password must be non-empty!");
