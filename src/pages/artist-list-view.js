@@ -54,15 +54,6 @@ export default function ArtistListViewPage({ artistName }) {
     setSelected([]);
   };
 
-  const handleSelectAll = () => {
-    const currentPageItems = images.slice(
-      (page - 1) * itemsPerPage,
-      page * itemsPerPage
-    );
-    const allIds = currentPageItems.map((item) => item.id);
-    setSelected(allIds);
-  };
-
   const openEditDialog = (item) => {
     setEditItem(item);
   };

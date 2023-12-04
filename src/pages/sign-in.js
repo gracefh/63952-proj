@@ -1,10 +1,9 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -12,17 +11,44 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
 
 const defaultTheme = createTheme();
 
 export default function SignInPage() {
-  const handleSubmit = (event) => {
+  const [error, setError] = React.useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    try {
+      const response = await fetch("https://localhost:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: data.get("email"),
+          password: data.get("password"),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        if (result.isArtist) {
+          navigate("/your-art");
+        } else {
+          navigate("/select-art");
+        }
+      } else {
+        setError(result.msg || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+    }
   };
 
   return (
@@ -49,6 +75,11 @@ export default function SignInPage() {
             noValidate
             sx={{ mt: 1 }}
           >
+            {error && (
+              <Alert severity="error" sx={{ width: "100%", mb: 2 }}>
+                {error}
+              </Alert>
+            )}
             <TextField
               margin="normal"
               required
@@ -69,10 +100,6 @@ export default function SignInPage() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
@@ -82,13 +109,8 @@ export default function SignInPage() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/sign-up" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

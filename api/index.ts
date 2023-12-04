@@ -30,7 +30,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_SRV,
     }),
-  }),
+  })
 );
 
 app.use(express.static(path.join(__dirname, "../public")));

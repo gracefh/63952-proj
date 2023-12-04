@@ -95,7 +95,7 @@ export default function SignUpPage() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} container justifyContent="flex-start">
                 <FormControl>
                   <FormLabel id="account-type-label">Account Type</FormLabel>
                   <RadioGroup
@@ -124,9 +124,9 @@ export default function SignUpPage() {
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="flex-start">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/sign-in" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
