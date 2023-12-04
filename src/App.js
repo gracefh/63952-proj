@@ -3,6 +3,7 @@ import SignInPage from "./pages/sign-in";
 import SignUpPage from "./pages/sign-up";
 import ArtUploadPage from "./pages/art-upload";
 import ArtistListViewPage from "./pages/artist-list-view";
+import SelectionPage from "./pages/selection-page";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
     // <SignInPage />
     // <SignUpPage />
     // <ArtUploadPage />
-    <ArtistListViewPage artistName={"Catherine"} />
+    // <ArtistListViewPage artistName={"Catherine"} /> 
+    <SelectionPage />
   );
 }
 
