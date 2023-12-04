@@ -1,6 +1,6 @@
 import { User } from "./app";
 import { AlreadyFriendsError, FriendNotFoundError, FriendRequestAlreadyExistsError, FriendRequestDoc, FriendRequestNotFoundError } from "./concepts/friend";
-import { PostAuthorNotMatchError, PostDoc } from "./concepts/post";
+import { ArtAuthorNotMatchError, ArtDoc } from "./concepts/art";
 import { Router } from "./framework/router";
 
 /**
@@ -11,20 +11,20 @@ export default class Responses {
   /**
    * Convert PostDoc into more readable format for the frontend by converting the author id into a username.
    */
-  static async post(post: PostDoc | null) {
-    if (!post) {
-      return post;
+  static async art(art: ArtDoc | null) {
+    if (!art) {
+      return art;
     }
-    const author = await User.getUserById(post.author);
-    return { ...post, author: author.username };
+    const author = await User.getUserById(art.author);
+    return { ...art, author: author.username };
   }
 
   /**
    * Same as {@link post} but for an array of PostDoc for improved performance.
    */
-  static async posts(posts: PostDoc[]) {
-    const authors = await User.idsToUsernames(posts.map((post) => post.author));
-    return posts.map((post, i) => ({ ...post, author: authors[i] }));
+  static async artPieces(artPieces: ArtDoc[]) {
+    const authors = await User.idsToUsernames(artPieces.map((art) => art.author));
+    return artPieces.map((art, i) => ({ ...art, author: authors[i] }));
   }
 
   /**
@@ -39,7 +39,7 @@ export default class Responses {
   }
 }
 
-Router.registerError(PostAuthorNotMatchError, async (e) => {
+Router.registerError(ArtAuthorNotMatchError, async (e) => {
   const username = (await User.getUserById(e.author)).username;
   return e.formatWith(username, e._id);
 });
