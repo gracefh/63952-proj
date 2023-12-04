@@ -25,13 +25,23 @@ export default class CartConcept {
   }
 
   async getByAuthor(author: ObjectId) {
-    return await this.getCarts({ author });
+    const cart = await this.carts.readOne({ author });
+    if (!cart) {
+      throw new NotFoundError(`Cart authored by ${author} does not exist!`);
+    }
+    return cart;
   }
 
   async update(_id: ObjectId, update: Partial<CartDoc>) {
     this.sanitizeUpdate(update);
     await this.carts.updateOne({ _id }, update);
     return { msg: "Cart successfully updated!" };
+  }
+
+  async addToCart(author: ObjectId, art: ObjectId) {
+    const cart = await this.getByAuthor(author);
+    cart.contents.push(art);
+    return { msg: "Art successfully added to cart!" };
   }
 
   async delete(_id: ObjectId) {

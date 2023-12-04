@@ -59,12 +59,6 @@ class Routes {
     return { msg: "Logged out!" };
   }
 
-  @Router.get("/users/is-artist/:email")
-  async isArtist(email: string) {
-    const u = await User.getUserByEmail(email);
-    return await User.isArtist(u._id);
-  }
-
   // ART
 
   @Router.get("/art")
@@ -105,6 +99,19 @@ class Routes {
   async getUserCart(session: WebSessionDoc) {
     const user = WebSession.getUser(session);
     return await Cart.getByAuthor(user);
+  }
+
+  @Router.patch("/cart/:art")
+  async updateCart(session: WebSessionDoc, art: ObjectId) {
+    const user = WebSession.getUser(session);
+    return await Cart.addToCart(user, art);
+  }
+
+  @Router.patch("/cart/clear")
+  async clearCart(session: WebSessionDoc) {
+    const user = WebSession.getUser(session);
+    const cart = await Cart.getByAuthor(user);
+    return await Cart.update(cart._id, { contents: [] });
   }
 
 }
