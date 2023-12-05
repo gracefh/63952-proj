@@ -32,7 +32,9 @@ class Routes {
   async createUser(session: WebSessionDoc, firstName: string, lastName: string, email: string, password: string, isArtist: boolean) {
     WebSession.isLoggedOut(session);
     const user = await User.create(firstName, lastName, email, password, isArtist);
-    Cart.create(user.user!._id);
+    if (user) {
+      Cart.create(user.user!._id);
+    }
     return user;
   }
 
