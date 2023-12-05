@@ -16,7 +16,7 @@ import Navbar from "../components/navbar";
 
 const defaultTheme = createTheme();
 const dummyData = [
-  { id: 1, name: "Image1.jpg", price: 0, tags: "" },
+  { id: 1, name: "Image1.jpg", price: 0, tags: "modern, test" },
   { id: 2, name: "Image2.jpg", price: 0, tags: "" },
   { id: 3, name: "Image3.jpg", price: 0, tags: "" },
   { id: 4, name: "Image4.jpg", price: 0, tags: "" },
@@ -95,11 +95,13 @@ export default function SelectionPage() {
                     <Typography gutterBottom variant="h5" component="h2">
                       {card.name}
                     </Typography>
-                    <Typography>By: Artist XYZ</Typography>
+                    <Typography component="h3">By: Artist XYZ</Typography>
+                    <Typography display='inline-flex' flexDirection={'row-reverse'}> tags: {card.tags}</Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small">View</Button>
-                    <Button size="small">Add</Button>
+                    {/* <Button size="small" onClick={viewData}>View</Button> */}
+                    <Typography component="h3" flexDirection={'row'}>${card.price}</Typography>
+                    <Box sx={{ flexGrow: 1 }} /><Button size="small" >Add</Button>
                   </CardActions>
                 </Card>
               </Grid>
