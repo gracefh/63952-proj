@@ -8,14 +8,14 @@ import { Router } from "./framework/router";
  */
 export default class Responses {
   /**
-   * Convert PostDoc into more readable format for the frontend by converting the author id into a username.
+   * Convert ArtDoc into more readable format for the frontend by converting the author id into a username.
    */
   static async art(art: ArtDoc | null) {
     if (!art) {
       return art;
     }
     const author = await User.getUserById(art.author);
-    return { ...art, author: author.email };
+    return { ...art, author: author.firstName + " " + author.lastName };
   }
 
   /**

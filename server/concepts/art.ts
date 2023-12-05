@@ -7,13 +7,14 @@ export interface ArtDoc extends BaseDoc {
   author: ObjectId;
   title: string;
   link: string;
+  price: number;
 }
 
 export default class ArtConcept {
   public readonly artPieces = new DocCollection<ArtDoc>("artPieces");
 
   async create(author: ObjectId, title: string, link: string) {
-    const _id = await this.artPieces.createOne({ author, title, link });
+    const _id = await this.artPieces.createOne({ author, title, link, price: 0 });
     return { msg: "Art successfully created!", art: await this.artPieces.readOne({ _id }) };
   }
 
