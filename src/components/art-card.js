@@ -12,13 +12,17 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const ArtCard = ({ card }) => {
   const imageUrl = `https://source.unsplash.com/random?wallpapers&sig=${card.id}`;
   const [open, setOpen] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleAddOrDelete = () => setIsAdded(!isAdded);
 
   return (
     <Card
@@ -60,7 +64,9 @@ const ArtCard = ({ card }) => {
         <Button size="small" onClick={handleOpen}>
           View
         </Button>
-        <Button size="small">Add</Button>
+        <IconButton size="small" onClick={handleAddOrDelete}>
+          {isAdded ? <DeleteIcon /> : <AddShoppingCartIcon />}
+        </IconButton>
       </CardActions>
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <DialogContent>
