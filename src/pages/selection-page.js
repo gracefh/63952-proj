@@ -15,21 +15,21 @@ const dummyData = [
   {
     id: 1,
     name: "Image1.jpg",
-    price: 0,
+    price: 1,
     tags: ["Expressionism"],
     artist: "Charlie",
   },
   {
     id: 2,
     name: "Image2.jpg",
-    price: 0,
+    price: 12,
     tags: ["Rococo"],
     artist: "Casey",
   },
   {
     id: 3,
     name: "Image3.jpg",
-    price: 0,
+    price: 0.85,
     tags: ["Baroque", "Abstract"],
     artist: "Avery",
   },
@@ -57,7 +57,7 @@ const dummyData = [
   {
     id: 7,
     name: "Image7.jpg",
-    price: 0,
+    price: 10,
     tags: ["Rococo", "Abstract"],
     artist: "Grace",
   },

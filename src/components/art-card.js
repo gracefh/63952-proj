@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -8,9 +8,17 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 const ArtCard = ({ card }) => {
   const imageUrl = `https://source.unsplash.com/random?wallpapers&sig=${card.id}`;
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <Card
@@ -46,12 +54,31 @@ const ArtCard = ({ card }) => {
       </CardContent>
       <CardActions>
         <Typography component="h3" sx={{ mr: 2, ml: 2 }}>
-          ${card.price}
+          {card.price === 0 ? "FREE" : `$${card.price}`}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
-        <Button size="small">View</Button>
+        <Button size="small" onClick={handleOpen}>
+          View
+        </Button>
         <Button size="small">Add</Button>
       </CardActions>
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+        <DialogContent>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <img src={imageUrl} alt={card.name} style={{ width: "100%" }} />
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };
