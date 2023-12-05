@@ -181,7 +181,7 @@ export default function ArtistListViewPage({ artistName }) {
                 autoFocus
                 margin="dense"
                 label="Image Price"
-                type="text"
+                type="number"
                 fullWidth
                 defaultValue={editItem.price}
                 onChange={(e) =>
