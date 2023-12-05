@@ -40,6 +40,9 @@ export default class CartConcept {
 
   async addToCart(author: ObjectId, art: ObjectId) {
     const cart = await this.getByAuthor(author);
+    if (cart.contents.includes(art)) {
+      return { msg: "Art has already been added to cart!" };
+    }
     cart.contents.push(art);
     return { msg: "Art successfully added to cart!" };
   }
