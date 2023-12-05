@@ -11,7 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Input from "@mui/material/Input";
 import Paper from "@mui/material/Paper";
 import Navbar from "../components/navbar";
-import UploadImage from "../components/aws";
+import UploadImage from "../components/imageUpload";
 
 export default function ArtUploadPage() {
   const [selectedFiles, setSelectedFiles] = useState([]);

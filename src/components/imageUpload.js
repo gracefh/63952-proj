@@ -5,18 +5,25 @@ import axios from "axios";
 
 const UploadImageToS3WithReactS3 = () => {
 
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(undefined);
 
     const handleFileInput = (e) => {
-        setSelectedFile(e.target.files[0]);
+        if(e.target.files[0].size > 2097152){
+            alert("File is too big!");
+         }
+        else {
+            setSelectedFile(e.target.files[0]);
+        }
     }
 
 
     const handleUpload = async (file) => {
+        if(selectedFile === undefined) {
+            alert("Can't upload without file");
+        }
         const response = await axios.get(
             `/api/presignedUrl?fileType=${encodeURIComponent(file.type.split("/")[1])}`
         )
-        console.log(response);
         const {key, uploadUrl} = response.data;
         await axios.put(uploadUrl, file);
         return key;
