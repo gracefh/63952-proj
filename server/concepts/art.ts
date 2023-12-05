@@ -50,7 +50,7 @@ export default class ArtConcept {
 
   private sanitizeUpdate(update: Partial<ArtDoc>) {
     // Make sure the update cannot change the author.
-    const allowedUpdates = ["author", "title", "link"];
+    const allowedUpdates = ["title", "link", "price", "tags"];
     for (const key in update) {
       if (!allowedUpdates.includes(key)) {
         throw new NotAllowedError(`Cannot update '${key}' field!`);
