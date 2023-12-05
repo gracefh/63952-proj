@@ -17,6 +17,32 @@ import {
   Paper,
   Pagination,
 } from "@mui/material";
+import { NumericFormat } from "react-number-format";
+import Autocomplete from "@mui/material/Autocomplete";
+import Chip from "@mui/material/Chip";
+
+const artisticStyles = [
+  "Abstract",
+  "Baroque",
+  "Surrealism",
+  "Impressionism",
+  "Cubism",
+  "Realism",
+  "Expressionism",
+  "Minimalism",
+  "Renaissance",
+  "Pop Art",
+  "Futurism",
+  "Art Nouveau",
+  "Gothic",
+  "Neo-Classicism",
+  "Romanticism",
+  "Graffiti",
+  "Digital",
+  "Photorealism",
+  "Conceptual",
+  "Modernism",
+];
 
 const itemsPerPage = 10;
 
@@ -177,27 +203,45 @@ export default function ArtistListViewPage({ artistName }) {
                   setEditItem({ ...editItem, name: e.target.value })
                 }
               />
-              <TextField
+              <NumericFormat
                 autoFocus
                 margin="dense"
-                label="Image Price"
-                type="number"
-                fullWidth
-                defaultValue={editItem.price}
-                onChange={(e) =>
-                  setEditItem({ ...editItem, price: e.target.value })
-                }
-              />
-              <TextField
-                autoFocus
-                margin="dense"
-                label="Image Tags (separated by comma)"
+                label="Image Price (USD)"
+                customInput={TextField}
                 type="text"
                 fullWidth
+                defaultValue={editItem.price}
+                thousandSeparator
+                prefix="$"
+                onValueChange={(values) => {
+                  const { floatValue } = values;
+                  setEditItem({ ...editItem, price: floatValue });
+                }}
+              />
+              <Autocomplete
+                multiple
+                options={artisticStyles.map((option) => option)}
                 defaultValue={editItem.tags}
-                onChange={(e) =>
-                  setEditItem({ ...editItem, tags: e.target.value })
+                freeSolo
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option}
+                      {...getTagProps({ index })}
+                    />
+                  ))
                 }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    label="Image Tags"
+                  />
+                )}
+                onChange={(event, newValue) => {
+                  setEditItem({ ...editItem, tags: newValue });
+                }}
               />
             </DialogContent>
             <DialogActions>
@@ -221,7 +265,7 @@ export default function ArtistListViewPage({ artistName }) {
 }
 
 const dummyData = [
-  { id: 1, name: "Image1.jpg" },
+  { id: 1, name: "Image1.jpg", tags: [], price: 0 },
   { id: 2, name: "Image2.jpg" },
   { id: 3, name: "Image3.jpg" },
   { id: 4, name: "Image4.jpg" },
