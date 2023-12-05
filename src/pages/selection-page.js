@@ -1,4 +1,5 @@
-import * as React from "react";
+// import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -14,10 +15,21 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Navbar from "../components/navbar";
 
 const defaultTheme = createTheme();
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const dummyData = [
+  { id: 1, name: "Image1.jpg", price: 0, tags: "" },
+  { id: 2, name: "Image2.jpg", price: 0, tags: "" },
+  { id: 3, name: "Image3.jpg", price: 0, tags: "" },
+  { id: 4, name: "Image4.jpg", price: 0, tags: "" },
+  { id: 5, name: "Image5.jpg", price: 0, tags: "" },
+  { id: 6, name: "Image6.jpg", price: 0, tags: "" },
+  { id: 7, name: "Image7.jpg", price: 0, tags: "" },
+  { id: 8, name: "Image8.jpg", price: 0, tags: "" },
+  { id: 9, name: "Image9.jpg", price: 0, tags: "" },
+]
 
 export default function SelectionPage() {
+  const [images, setImages] = useState(dummyData);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -63,7 +75,7 @@ export default function SelectionPage() {
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
+            {images.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
                 <Card
                   sx={{
@@ -81,7 +93,7 @@ export default function SelectionPage() {
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Title
+                      {card.name}
                     </Typography>
                     <Typography>By: Artist XYZ</Typography>
                   </CardContent>
