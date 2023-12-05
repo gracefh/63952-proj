@@ -6,6 +6,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 
 const ArtCard = ({ card }) => {
   const imageUrl = `https://source.unsplash.com/random?wallpapers&sig=${card.id}`;
@@ -29,16 +31,25 @@ const ArtCard = ({ card }) => {
         <Typography gutterBottom variant="h5" component="h2">
           {card.name}
         </Typography>
-        <Typography component="h3">By: Artist XYZ</Typography>
-        <Typography display="inline-flex" flexDirection={"row-reverse"}>
-          tags: {card.tags}
-        </Typography>
+        <Typography component="h3">{card.artist}</Typography>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          flexWrap="wrap"
+          gap={0.5}
+          mt={1}
+        >
+          {card.tags.map((tag, index) => (
+            <Chip key={index} label={tag} size="small" />
+          ))}
+        </Stack>
       </CardContent>
       <CardActions>
-        <Typography component="h3" flexDirection={"row"}>
+        <Typography component="h3" sx={{ mr: 2, ml: 2 }}>
           ${card.price}
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
+        <Button size="small">View</Button>
         <Button size="small">Add</Button>
       </CardActions>
     </Card>

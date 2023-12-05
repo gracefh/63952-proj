@@ -12,15 +12,69 @@ import ArtCard from "../components/art-card";
 
 const defaultTheme = createTheme();
 const dummyData = [
-  { id: 1, name: "Image1.jpg", price: 0, tags: "modern, test" },
-  { id: 2, name: "Image2.jpg", price: 0, tags: "" },
-  { id: 3, name: "Image3.jpg", price: 0, tags: "" },
-  { id: 4, name: "Image4.jpg", price: 0, tags: "" },
-  { id: 5, name: "Image5.jpg", price: 0, tags: "" },
-  { id: 6, name: "Image6.jpg", price: 0, tags: "" },
-  { id: 7, name: "Image7.jpg", price: 0, tags: "" },
-  { id: 8, name: "Image8.jpg", price: 0, tags: "" },
-  { id: 9, name: "Image9.jpg", price: 0, tags: "" },
+  {
+    id: 1,
+    name: "Image1.jpg",
+    price: 0,
+    tags: ["Expressionism"],
+    artist: "Charlie",
+  },
+  {
+    id: 2,
+    name: "Image2.jpg",
+    price: 0,
+    tags: ["Rococo"],
+    artist: "Casey",
+  },
+  {
+    id: 3,
+    name: "Image3.jpg",
+    price: 0,
+    tags: ["Baroque", "Abstract"],
+    artist: "Avery",
+  },
+  {
+    id: 4,
+    name: "Image4.jpg",
+    price: 0,
+    tags: ["Pop Art", "Expressionism", "Rococo"],
+    artist: "Taylor",
+  },
+  {
+    id: 5,
+    name: "Image5.jpg",
+    price: 0,
+    tags: ["Impressionism"],
+    artist: "Charlie",
+  },
+  {
+    id: 6,
+    name: "Image6.jpg",
+    price: 0,
+    tags: ["Abstract", "Impressionism"],
+    artist: "Sam",
+  },
+  {
+    id: 7,
+    name: "Image7.jpg",
+    price: 0,
+    tags: ["Rococo", "Abstract"],
+    artist: "Grace",
+  },
+  {
+    id: 8,
+    name: "Image8.jpg",
+    price: 0,
+    tags: ["Surrealism"],
+    artist: "Ivy",
+  },
+  {
+    id: 9,
+    name: "Image9.jpg",
+    price: 0,
+    tags: ["Minimalism", "Expressionism"],
+    artist: "Catherine",
+  },
 ];
 
 export default function SelectionPage() {
