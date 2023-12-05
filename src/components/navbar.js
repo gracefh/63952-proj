@@ -9,7 +9,7 @@ export default function Navbar() {
   const [logoutError, setLogoutError] = useState("");
 
   const handleLogout = () => {
-    fetch("http://localhost:5000/api/logout", {
+    fetch("/api/logout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -7,6 +7,9 @@ import { ArtDoc } from "./concepts/art";
 import { UserDoc } from "./concepts/user";
 import { WebSessionDoc } from "./concepts/websession";
 import Responses from "./responses";
+import { s3Client } from "./aws";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { randomUUID } from "crypto";
 
 class Routes {
   @Router.get("/session")
@@ -133,6 +136,42 @@ class Routes {
     return await TagList.removeTagFromArt(art, tag);
   }
 
+  // ROUTER THINGS
+
+  @Router.get("/presignedUrl")
+  async getPresignedUrl(session: WebSessionDoc, fileType: string) {
+    console.log("Hello", fileType);
+    // const ex = fileType.split("/")[1];
+    const ex = fileType;
+
+    const Key = `${randomUUID()}`;
+  
+
+    console.log(ex, Key);
+    const s3Params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key,
+      Expires: 60,
+      ContentType: `image/${ex}`,
+    };
+
+    try {
+      console.log("got here");
+      const uploadUrl = await s3Client.getSignedUrl("putObject", s3Params);
+
+      console.log("uploadUrl", uploadUrl);
+    
+      return {
+        uploadUrl: uploadUrl,
+        key: Key
+      }
+    }
+    catch(e){
+      console.log(e);
+    }
+  
+    
+  }
 }
 
 export default getExpressRouter(new Routes());
