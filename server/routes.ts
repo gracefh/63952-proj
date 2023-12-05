@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 import { Router, getExpressRouter } from "./framework/router";
 
-import { Art, Cart, TagList, User, WebSession } from "./app";
+import { Art, Cart, User, WebSession } from "./app";
 import { ArtDoc } from "./concepts/art";
 import { UserDoc } from "./concepts/user";
 import { WebSessionDoc } from "./concepts/websession";
@@ -80,7 +80,6 @@ class Routes {
   async createArt(session: WebSessionDoc, title: string, link: string) {
     const user = WebSession.getUser(session);
     const created = await Art.create(user, title, link);
-    await TagList.create(created.art!._id);
     return { msg: created.msg, post: await Responses.art(created.art) };
   }
 
@@ -117,23 +116,6 @@ class Routes {
     const user = WebSession.getUser(session);
     const cart = await Cart.getByAuthor(user);
     return await Cart.update(cart._id, { contents: [] });
-  }
-
-  // TAG
-
-  @Router.get("/tagList")
-  async getTags(session: WebSessionDoc, art: ObjectId) {
-    return await TagList.getByArtID(art);
-  }
-
-  @Router.patch("/tagList/add")
-  async addTag(session: WebSessionDoc, art: ObjectId, tag: string) {
-    return await TagList.addTagToArt(art, tag);
-  }
-
-  @Router.patch("/tagList/remove")
-  async removeTag(session: WebSessionDoc, art: ObjectId, tag: string) {
-    return await TagList.removeTagFromArt(art, tag);
   }
 
   // ROUTER THINGS
