@@ -11,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Input from "@mui/material/Input";
 import Paper from "@mui/material/Paper";
 import Navbar from "../components/navbar";
+import UploadImage from "../components/aws";
 
 export default function ArtUploadPage() {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -43,6 +44,7 @@ export default function ArtUploadPage() {
             alignItems: "center",
           }}
         >
+          <UploadImage/>
           <Typography component="h1" variant="h5">
             Upload Your Art Here!
           </Typography>

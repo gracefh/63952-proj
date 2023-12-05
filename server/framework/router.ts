@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import fileUpload from "express-fileupload";
 import "reflect-metadata";
 
 import { getParamNames } from "./utils";
@@ -46,7 +47,8 @@ export class Router {
   public readonly expressRouter = express.Router();
   private static readonly errorHandlers: Map<new (...args: never[]) => Error, (e: Error) => Error | Promise<Error>> = new Map();
 
-  constructor() {}
+  constructor() {
+  }
 
   public static registerError<EType>(etype: new (...args: never[]) => EType, handler: (e: EType) => Error | Promise<Error>) {
     this.errorHandlers.set(etype as new (...args: never[]) => Error, handler as (e: Error) => Error | Promise<Error>);
@@ -97,7 +99,7 @@ export class Router {
   private makeRoute(f: Function) {
     return async (req: Request, res: Response) => {
       const reqMap = (name: string) => {
-        if (name === "session" || name == "param" || name == "query" || name == "body") {
+        if (name === "session" || name == "param" || name == "query" || name == "body" || name == "files") {
           return req[name];
         }
         const ret = req.params[name] || req.query[name] || req.body[name];

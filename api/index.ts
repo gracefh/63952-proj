@@ -11,9 +11,12 @@ dotenv.config();
 import MongoStore from "connect-mongo";
 import { connectDb } from "../server/db";
 import router from "../server/routes";
+import fileUpload from "express-fileupload";
 
 export const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(fileUpload());
 app.use(logger("dev"));
 
 app.use(cors()); // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
