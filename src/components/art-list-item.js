@@ -6,7 +6,7 @@ import {
   IconButton,
   Card,
   CardContent,
-  Chip,
+  Chip
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -25,6 +25,9 @@ export default function ArtListItem({
     <Card variant="outlined" style={{ marginBottom: "10px" }}>
       <CardContent>
         <ListItem>
+          <img
+                    src={item.link} alt={item.title}
+           />
           <Checkbox
             edge="start"
             checked={isSelected}
@@ -44,6 +47,7 @@ export default function ArtListItem({
               />
             ))}
           </div>
+          <ListItemText primary={item.title} />
           <IconButton aria-label="edit" onClick={() => onEdit(item)}>
             <EditIcon />
           </IconButton>

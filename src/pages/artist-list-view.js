@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ArtListItem from "../components/art-list-item";
 import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
+import {AuthContext} from "../AuthContext";
+import axios from "axios";
 
 import {
   Typography,
@@ -53,9 +55,24 @@ export default function ArtistListViewPage({ artistName }) {
   const [page, setPage] = useState(1);
   const [selectAll, setSelectAll] = useState(false);
   const [selectAllLabel, setSelectAllLabel] = useState("Select All");
+  const { isLoggedIn } = useContext(AuthContext);
+  const [currentUser, setUser] = useState(undefined);
 
   const pageCount = Math.ceil(images.length / itemsPerPage);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(!isLoggedIn || currentUser) {
+      return;
+    }
+    axios.get('/api/session').then((value) => {
+      setUser(value.data);
+      axios.get(`/api/art?author=${value.data.email}`).then((value) => {
+        console.log(value.data);
+        setImages(value.data);
+      })
+    });
+  })
 
   const handleSelectToggle = () => {
     if (selectAll) {
@@ -126,7 +143,7 @@ export default function ArtistListViewPage({ artistName }) {
           variant="h4"
           style={{ margin: "20px 0", textAlign: "center" }}
         >
-          Hi, {artistName}
+          Hi, {currentUser !== undefined ? currentUser.firstName : artistName}
         </Typography>
         <Box
           display="flex"

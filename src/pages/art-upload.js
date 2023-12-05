@@ -11,25 +11,54 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Input from "@mui/material/Input";
 import Paper from "@mui/material/Paper";
 import Navbar from "../components/navbar";
-import UploadImage from "../components/imageUpload";
+import axios from "axios";
 
 export default function ArtUploadPage() {
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(undefined);
+  const [title, setTitle] = useState("");
 
   const handleFileChange = (event) => {
-    setSelectedFiles(Array.from(event.target.files));
+    if (event.target.files[0].size > 2097152) {
+      alert("File is too big!");
+      return;
+    }
+    setSelectedFile(event.target.files[0]);
     event.target.value = "";
   };
 
+  const handleTextChange = (event) => {
+    setTitle(event.target.value);
+  };
+
   const handleRemoveFile = (index) => {
-    const newFiles = selectedFiles.filter((_, i) => i !== index);
-    setSelectedFiles(newFiles);
+    setSelectedFile(undefined);
     document.getElementById("file-input").value = "";
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(selectedFiles);
+    if (selectedFile === undefined) {
+      alert("Can't upload without file");
+    }
+    const response = await axios.get(
+      `/api/presignedUrl?fileType=${encodeURIComponent(
+        selectedFile.type.split("/")[1]
+      )}`
+    );
+    const { key, uploadUrl } = response.data;
+    await axios.put(uploadUrl, selectedFile, 
+      {
+        headers: { "Content-Type": selectedFile.type },
+      });
+    await axios.post(
+      `/api/art`,
+      {
+        title: title,
+        link: `https://s3.us-east-2.amazonaws.com/6.3952-final-proj/${key}`,
+      }
+    );
+    alert("Successfully uploaded");
+    return key;
   };
 
   return (
@@ -44,7 +73,6 @@ export default function ArtUploadPage() {
             alignItems: "center",
           }}
         >
-          <UploadImage/>
           <Typography component="h1" variant="h5">
             Upload Your Art Here!
           </Typography>
@@ -72,7 +100,7 @@ export default function ArtUploadPage() {
             >
               <Input
                 type="file"
-                inputProps={{ multiple: true }}
+                inputProps={{ multiple: false }}
                 onChange={handleFileChange}
                 style={{ display: "none" }}
                 id="file-input"
@@ -83,33 +111,37 @@ export default function ArtUploadPage() {
                   component="span"
                   sx={{ mt: 2, width: 500 }}
                 >
-                  {selectedFiles.length > 0
-                    ? `${selectedFiles.length} file${
-                        selectedFiles.length > 1 ? "s" : ""
-                      } selected`
-                    : "Choose Files"}
+                  {selectedFile !== undefined ? `Change File` : "Choose Files"}
                 </Button>
               </label>
 
-              <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-                {selectedFiles.map((file, index) => (
-                  <ListItem
-                    key={index}
-                    secondaryAction={
-                      <IconButton
-                        edge="end"
-                        aria-label="delete"
-                        onClick={() => handleRemoveFile(index)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    }
-                  >
-                    <ListItemText primary={file.name} />
-                  </ListItem>
-                ))}
-              </List>
+              {selectedFile !== undefined ? (
+                <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+                  {[selectedFile].map((file, index) => (
+                    <ListItem
+                      key={index}
+                      secondaryAction={
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={() => handleRemoveFile(index)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      }
+                    >
+                      <ListItemText primary={file.name} />
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                <></>
+              )}
             </Paper>
+            <label htmlFor="title">
+              <Typography>Title of artwork</Typography>
+            </label>
+            <Input type="text" onChange={handleTextChange} id="title" />
             <Button
               type="submit"
               fullWidth

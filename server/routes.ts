@@ -124,14 +124,11 @@ class Routes {
 
   @Router.get("/presignedUrl")
   async getPresignedUrl(session: WebSessionDoc, fileType: string) {
-    console.log("Hello", fileType);
     // const ex = fileType.split("/")[1];
     const ex = fileType;
 
-    const Key = `${randomUUID()}`;
+    const Key = `${randomUUID()}.${ex}`;
   
-
-    console.log(ex, Key);
     const s3Params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key,
