@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import ArtListItem from "../components/art-list-item";
 import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
-import {AuthContext} from "../AuthContext";
+import { AuthContext } from "../AuthContext";
 import axios from "axios";
 
 import {
@@ -29,6 +29,7 @@ const artisticStyles = [
   "Surrealism",
   "Impressionism",
   "Cubism",
+  "Rococo",
   "Realism",
   "Expressionism",
   "Minimalism",
@@ -49,7 +50,7 @@ const artisticStyles = [
 const itemsPerPage = 10;
 
 export default function ArtistListViewPage({ artistName }) {
-  const [images, setImages] = useState(dummyData);
+  const [images, setImages] = useState([]);
   const [selected, setSelected] = useState([]);
   const [editItem, setEditItem] = useState(null);
   const [page, setPage] = useState(1);
@@ -62,17 +63,17 @@ export default function ArtistListViewPage({ artistName }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!isLoggedIn || currentUser) {
+    if (!isLoggedIn || currentUser) {
       return;
     }
-    axios.get('/api/session').then((value) => {
+    axios.get("/api/session").then((value) => {
       setUser(value.data);
       axios.get(`/api/art?author=${value.data.email}`).then((value) => {
         console.log(value.data);
         setImages(value.data);
-      })
+      });
     });
-  })
+  });
 
   const handleSelectToggle = () => {
     if (selectAll) {
@@ -281,52 +282,52 @@ export default function ArtistListViewPage({ artistName }) {
   );
 }
 
-const dummyData = [
-  { id: 1, name: "Image1.jpg", tags: [], price: 0 },
-  { id: 2, name: "Image2.jpg" },
-  { id: 3, name: "Image3.jpg" },
-  { id: 4, name: "Image4.jpg" },
-  { id: 5, name: "Image5.jpg" },
-  { id: 6, name: "Image6.jpg" },
-  { id: 7, name: "Image7.jpg" },
-  { id: 8, name: "Image8.jpg" },
-  { id: 9, name: "Image9.jpg" },
-  { id: 10, name: "Image10.jpg" },
-  { id: 11, name: "Image11.jpg" },
-  { id: 12, name: "Image12.jpg" },
-  { id: 13, name: "Image13.jpg" },
-  { id: 14, name: "Image14.jpg" },
-  { id: 15, name: "Image15.jpg" },
-  { id: 16, name: "Image16.jpg" },
-  { id: 17, name: "Image17.jpg" },
-  { id: 18, name: "Image18.jpg" },
-  { id: 19, name: "Image19.jpg" },
-  { id: 20, name: "Image20.jpg" },
-  { id: 21, name: "Image21.jpg" },
-  { id: 22, name: "Image22.jpg" },
-  { id: 23, name: "Image23.jpg" },
-  { id: 24, name: "Image24.jpg" },
-  { id: 25, name: "Image25.jpg" },
-  { id: 26, name: "Image26.jpg" },
-  { id: 27, name: "Image27.jpg" },
-  { id: 28, name: "Image28.jpg" },
-  { id: 29, name: "Image29.jpg" },
-  { id: 30, name: "Image30.jpg" },
-  { id: 31, name: "Image31.jpg" },
-  { id: 32, name: "Image32.jpg" },
-  { id: 33, name: "Image33.jpg" },
-  { id: 34, name: "Image34.jpg" },
-  { id: 35, name: "Image35.jpg" },
-  { id: 36, name: "Image36.jpg" },
-  { id: 37, name: "Image37.jpg" },
-  { id: 38, name: "Image38.jpg" },
-  { id: 39, name: "Image39.jpg" },
-  { id: 40, name: "Image40.jpg" },
-  { id: 41, name: "Image41.jpg" },
-  { id: 42, name: "Image42.jpg" },
-  { id: 43, name: "Image43.jpg" },
-  { id: 44, name: "Image44.jpg" },
-  { id: 45, name: "Image45.jpg" },
-  { id: 46, name: "Image46.jpg" },
-  { id: 47, name: "Image47.jpg" },
-];
+// const dummyData = [
+//   { id: 1, name: "Image1.jpg", tags: [], price: 0 },
+//   { id: 2, name: "Image2.jpg" },
+//   { id: 3, name: "Image3.jpg" },
+//   { id: 4, name: "Image4.jpg" },
+//   { id: 5, name: "Image5.jpg" },
+//   { id: 6, name: "Image6.jpg" },
+//   { id: 7, name: "Image7.jpg" },
+//   { id: 8, name: "Image8.jpg" },
+//   { id: 9, name: "Image9.jpg" },
+//   { id: 10, name: "Image10.jpg" },
+//   { id: 11, name: "Image11.jpg" },
+//   { id: 12, name: "Image12.jpg" },
+//   { id: 13, name: "Image13.jpg" },
+//   { id: 14, name: "Image14.jpg" },
+//   { id: 15, name: "Image15.jpg" },
+//   { id: 16, name: "Image16.jpg" },
+//   { id: 17, name: "Image17.jpg" },
+//   { id: 18, name: "Image18.jpg" },
+//   { id: 19, name: "Image19.jpg" },
+//   { id: 20, name: "Image20.jpg" },
+//   { id: 21, name: "Image21.jpg" },
+//   { id: 22, name: "Image22.jpg" },
+//   { id: 23, name: "Image23.jpg" },
+//   { id: 24, name: "Image24.jpg" },
+//   { id: 25, name: "Image25.jpg" },
+//   { id: 26, name: "Image26.jpg" },
+//   { id: 27, name: "Image27.jpg" },
+//   { id: 28, name: "Image28.jpg" },
+//   { id: 29, name: "Image29.jpg" },
+//   { id: 30, name: "Image30.jpg" },
+//   { id: 31, name: "Image31.jpg" },
+//   { id: 32, name: "Image32.jpg" },
+//   { id: 33, name: "Image33.jpg" },
+//   { id: 34, name: "Image34.jpg" },
+//   { id: 35, name: "Image35.jpg" },
+//   { id: 36, name: "Image36.jpg" },
+//   { id: 37, name: "Image37.jpg" },
+//   { id: 38, name: "Image38.jpg" },
+//   { id: 39, name: "Image39.jpg" },
+//   { id: 40, name: "Image40.jpg" },
+//   { id: 41, name: "Image41.jpg" },
+//   { id: 42, name: "Image42.jpg" },
+//   { id: 43, name: "Image43.jpg" },
+//   { id: 44, name: "Image44.jpg" },
+//   { id: 45, name: "Image45.jpg" },
+//   { id: 46, name: "Image46.jpg" },
+//   { id: 47, name: "Image47.jpg" },
+// ];
