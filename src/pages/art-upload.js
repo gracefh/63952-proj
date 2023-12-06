@@ -10,20 +10,25 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Input from "@mui/material/Input";
 import Paper from "@mui/material/Paper";
+import Alert from "@mui/material/Alert";
 import Navbar from "../components/navbar";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function ArtUploadPage() {
   const [selectedFile, setSelectedFile] = useState(undefined);
   const [title, setTitle] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     if (event.target.files[0].size > 2097152) {
-      alert("File is too big!");
+      setErrorMessage("File is too big!");
       return;
     }
     setSelectedFile(event.target.files[0]);
     event.target.value = "";
+    setErrorMessage("");
   };
 
   const handleTextChange = (event) => {
@@ -38,27 +43,27 @@ export default function ArtUploadPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedFile === undefined) {
-      alert("Can't upload without file");
+      setErrorMessage("Can't upload without file");
+      return;
     }
-    const response = await axios.get(
-      `/api/presignedUrl?fileType=${encodeURIComponent(
-        selectedFile.type.split("/")[1]
-      )}`
-    );
-    const { key, uploadUrl } = response.data;
-    await axios.put(uploadUrl, selectedFile, 
-      {
+    try {
+      const response = await axios.get(
+        `/api/presignedUrl?fileType=${encodeURIComponent(
+          selectedFile.type.split("/")[1]
+        )}`
+      );
+      const { key, uploadUrl } = response.data;
+      await axios.put(uploadUrl, selectedFile, {
         headers: { "Content-Type": selectedFile.type },
       });
-    await axios.post(
-      `/api/art`,
-      {
+      await axios.post(`/api/art`, {
         title: title,
         link: `https://s3.us-east-2.amazonaws.com/6.3952-final-proj/${key}`,
-      }
-    );
-    alert("Successfully uploaded");
-    return key;
+      });
+      navigate("/your-art");
+    } catch (error) {
+      setErrorMessage("Upload failed");
+    }
   };
 
   return (
@@ -82,6 +87,14 @@ export default function ArtUploadPage() {
             noValidate
             sx={{ mt: 1 }}
           >
+            {/* Error Message */}
+            {errorMessage && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {errorMessage}
+              </Alert>
+            )}
+
+            {/* File Input and List */}
             <Paper
               variant="outlined"
               sx={{
@@ -134,14 +147,16 @@ export default function ArtUploadPage() {
                     </ListItem>
                   ))}
                 </List>
-              ) : (
-                <></>
-              )}
+              ) : null}
             </Paper>
+
+            {/* Title Input */}
             <label htmlFor="title">
               <Typography>Title of artwork</Typography>
             </label>
             <Input type="text" onChange={handleTextChange} id="title" />
+
+            {/* Submit Button */}
             <Button
               type="submit"
               fullWidth
