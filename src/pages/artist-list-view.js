@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import ArtListItem from "../components/art-list-item";
 import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
@@ -87,14 +87,16 @@ export default function ArtistListViewPage({ artistName }) {
   };
 
   const handleDelete = (id) => {
-    axios.delete(`/api/art/${id}`).then((value) => {
-      setImages(value.data);
-    });
-    setSelected(selected.filter((item) => item !== id));
+    axios.delete(`/api/art/${id}`);
+    setImages(images.filter((item) => item._id !== id));
+    setSelected(selected.filter((_id) => _id !== id));
   };
 
   const handleBulkDelete = () => {
-    setImages(images.filter((item) => !selected.includes(item.id)));
+    for(const item of selected) {
+      axios.delete(`/api/art/${item}`);
+    }
+    setImages(images.filter((item) => !selected.includes(item._id)));
     setSelected([]);
   };
 
@@ -118,10 +120,9 @@ export default function ArtistListViewPage({ artistName }) {
     setSelected([]); // Clear selection when changing pages
   };
 
-  const currentItems = (images ?? []).slice(
+  const currentItems = useMemo(() => images !== undefined ? images.slice(
     (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+    page * itemsPerPage) : [], [images, page]);
 
   useEffect(() => {
     if (selected.length === currentItems.length) {

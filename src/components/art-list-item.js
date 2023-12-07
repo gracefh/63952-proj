@@ -45,7 +45,7 @@ export default function ArtListItem({
             edge="start"
             checked={selected}
             onChange={(e) => {
-              onCheck(item.id, e.target.checked);
+              onCheck(item._id, e.target.checked);
               setSelected(!selected);
             }}
           />
