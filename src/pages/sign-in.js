@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -24,7 +24,20 @@ export default function SignInPage() {
   const [error, setError] = React.useState("");
   const navigate = useNavigate();
   const { setIsLoggedIn } = useContext(AuthContext);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if(user !== undefined) {
+      if(user.isArtist === true) {
+        navigate("/your-art")
+      }
+      else {
+        navigate("/select-art")
+      }
+    }
+  })
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
