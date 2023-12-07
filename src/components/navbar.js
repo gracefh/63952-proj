@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AppBar, Toolbar, Button, Box, Alert } from "@mui/material";
+import { AppBar, Toolbar, Button, Box, Alert, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 import { useSelector, useDispatch } from 'react-redux';
@@ -48,6 +48,9 @@ export default function Navbar() {
             </Alert>
           </Box>
         )}
+        <Typography component="h2">
+          TrainMart
+        </Typography>
         <Box sx={{ flexGrow: 1 }} />
         {user!==undefined ? (
           <>
