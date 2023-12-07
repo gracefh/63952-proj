@@ -17,7 +17,8 @@ export default class UserConcept {
   async create(firstName: string, lastName: string, email: string, password: string, isArtist: boolean) {
     await this.canCreate(email, password);
     const _id = await this.users.createOne({ firstName, lastName, email, password, isArtist, isVerified: false });
-    return { msg: "User created successfully!", user: await this.users.readOne({ _id }) };
+    const user = await this.users.readOne({ _id });
+    return { msg: "User created successfully!", user: user !== null ? this.sanitizeUser(user) : undefined };
   }
 
   private sanitizeUser(user: UserDoc) {
@@ -70,7 +71,7 @@ export default class UserConcept {
     if (!user) {
       throw new NotAllowedError("Username or password is incorrect.");
     }
-    return { msg: "Successfully authenticated.", _id: user._id };
+    return { msg: "Successfully authenticated.", _id: user._id, user: this.sanitizeUser(user) };
   }
 
   async update(_id: ObjectId, update: Partial<UserDoc>) {

@@ -2,11 +2,16 @@ import React, { useContext, useState } from "react";
 import { AppBar, Toolbar, Button, Box, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
+import { useSelector, useDispatch } from 'react-redux';
+import {setUser} from '../features/user/userSlice';
 
 export default function Navbar() {
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const [logoutError, setLogoutError] = useState("");
+  const user = useSelector((state) => {
+    return state?.user});
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
     fetch("/api/logout", {
@@ -19,6 +24,7 @@ export default function Navbar() {
       .then((response) => {
         if (response.ok) {
           setIsLoggedIn(false);
+          dispatch(setUser(undefined));
           navigate("/");
         } else {
           setLogoutError("Something went wrong. Please try again.");
@@ -43,7 +49,7 @@ export default function Navbar() {
           </Box>
         )}
         <Box sx={{ flexGrow: 1 }} />
-        {isLoggedIn ? (
+        {user!==undefined ? (
           <>
             <Button color="inherit" onClick={() => navigate("/select-art")}>
               Browse All Art

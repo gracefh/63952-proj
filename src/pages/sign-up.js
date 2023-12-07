@@ -18,12 +18,15 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
 import Navbar from "../components/navbar";
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser } from '../features/user/userSlice'
 
 const defaultTheme = createTheme();
 
 export default function SignUpPage() {
   const [error, setError] = React.useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,6 +50,8 @@ export default function SignUpPage() {
       });
 
       if (response.ok) {
+        const result = response.json;
+        dispatch(setUser(result.user));
         navigate("/");
       } else {
         setError("An error occurred. Please try again.");

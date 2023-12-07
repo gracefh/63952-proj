@@ -15,6 +15,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
 import { AuthContext } from "../AuthContext";
 import Navbar from "../components/navbar";
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser } from '../features/user/userSlice'
 
 const defaultTheme = createTheme();
 
@@ -22,6 +24,7 @@ export default function SignInPage() {
   const [error, setError] = React.useState("");
   const navigate = useNavigate();
   const { setIsLoggedIn } = useContext(AuthContext);
+  const dispatch = useDispatch()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -43,6 +46,7 @@ export default function SignInPage() {
 
       if (response.ok) {
         setIsLoggedIn(true);
+        dispatch(setUser(result.user));
         if (result.isArtist) {
           navigate("/your-art");
         } else {

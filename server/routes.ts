@@ -55,7 +55,7 @@ class Routes {
   async logIn(session: WebSessionDoc, username: string, password: string) {
     const u = await User.authenticate(username, password);
     WebSession.start(session, u._id);
-    return { msg: "Logged in!", isArtist: await User.isArtist(u._id) };
+    return { msg: "Logged in!", user: u.user, isArtist: await User.isArtist(u._id) };
   }
 
   @Router.post("/logout")

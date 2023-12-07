@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import ArtListItem from "../components/art-list-item";
 import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthContext";
 import axios from "axios";
+import { useSelector} from 'react-redux'
 
 import {
   Typography,
@@ -56,24 +56,19 @@ export default function ArtistListViewPage({ artistName }) {
   const [page, setPage] = useState(1);
   const [selectAll, setSelectAll] = useState(false);
   const [selectAllLabel, setSelectAllLabel] = useState("Select All");
-  const { isLoggedIn } = useContext(AuthContext);
-  const [currentUser, setUser] = useState(undefined);
+  const user = useSelector((state) => state.user);
 
   const pageCount = Math.ceil(images.length / itemsPerPage);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoggedIn || currentUser) {
+    if (!user) {
       return;
     }
-    axios.get("/api/session").then((value) => {
-      setUser(value.data);
-      axios.get(`/api/art?author=${value.data.email}`).then((value) => {
-        console.log(value.data);
-        setImages(value.data);
-      });
+    axios.get(`/api/art?author=${user.email}`).then((value) => {
+      setImages(value.data);
     });
-  });
+  }, [user]);
 
   const handleSelectToggle = () => {
     if (selectAll) {
@@ -92,7 +87,9 @@ export default function ArtistListViewPage({ artistName }) {
   };
 
   const handleDelete = (id) => {
-    setImages(images.filter((item) => item.id !== id));
+    axios.delete(`/api/art/${id}`).then((value) => {
+      setImages(value.data);
+    });
     setSelected(selected.filter((item) => item !== id));
   };
 
@@ -121,7 +118,7 @@ export default function ArtistListViewPage({ artistName }) {
     setSelected([]); // Clear selection when changing pages
   };
 
-  const currentItems = images.slice(
+  const currentItems = (images ?? []).slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
@@ -144,7 +141,7 @@ export default function ArtistListViewPage({ artistName }) {
           variant="h4"
           style={{ margin: "20px 0", textAlign: "center" }}
         >
-          Hi, {currentUser !== undefined ? currentUser.firstName : artistName}
+          Hi, {user !== undefined ? user.firstName : artistName}
         </Typography>
         <Box
           display="flex"
@@ -184,11 +181,11 @@ export default function ArtistListViewPage({ artistName }) {
               <List>
                 {currentItems.map((item) => (
                   <ArtListItem
-                    key={item.id}
+                    key={item._id}
                     item={item}
-                    isSelected={selected.includes(item.id)}
+                    isSelected={selected.includes(item._id)}
                     onEdit={openEditDialog}
-                    onDelete={handleDelete}
+                    onDelete={() => handleDelete(item._id)}
                     onCheck={handleCheck}
                   />
                 ))}
