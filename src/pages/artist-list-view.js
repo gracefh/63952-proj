@@ -74,7 +74,7 @@ export default function ArtistListViewPage({ artistName }) {
     if (selectAll) {
       setSelected([]);
     } else {
-      const allIds = currentItems.map((item) => item.id);
+      const allIds = currentItems.map((item) => item._id);
       setSelected(allIds);
     }
     setSelectAll(!selectAll);
@@ -123,6 +123,8 @@ export default function ArtistListViewPage({ artistName }) {
   const currentItems = useMemo(() => images !== undefined ? images.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage) : [], [images, page]);
+
+  const memoizedSelected = useMemo(() => selected, [selected]);
 
   useEffect(() => {
     if (selected.length === currentItems.length) {
@@ -184,7 +186,7 @@ export default function ArtistListViewPage({ artistName }) {
                   <ArtListItem
                     key={item._id}
                     item={item}
-                    isSelected={selected.includes(item._id)}
+                    isSelected={memoizedSelected.includes(item._id)}
                     onEdit={openEditDialog}
                     onDelete={() => handleDelete(item._id)}
                     onCheck={handleCheck}

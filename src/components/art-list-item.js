@@ -25,7 +25,6 @@ export default function ArtListItem({
   onCheck,
 }) {
   const [openDialog, setOpenDialog] = useState(false);
-  const [selected, setSelected] = useState(isSelected);
   const price = item.price || 0;
   const tags = item.tags || [];
 
@@ -43,10 +42,9 @@ export default function ArtListItem({
         <ListItem>
           <Checkbox
             edge="start"
-            checked={selected}
+            checked={isSelected}
             onChange={(e) => {
               onCheck(item._id, e.target.checked);
-              setSelected(!selected);
             }}
           />
           <CardMedia
