@@ -49,7 +49,7 @@ export default function Navbar() {
           </Box>
         )}
         <Typography component="h2">
-          TrainMart
+          Train mART
         </Typography>
         <Box sx={{ flexGrow: 1 }} />
         {user!==undefined ? (
