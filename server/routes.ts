@@ -79,9 +79,18 @@ class Routes {
   }
 
   @Router.post("/art")
-  async createArt(session: WebSessionDoc, title: string, link: string) {
+  async createArt(session: WebSessionDoc, title: string, link: string, price?: number, tags?: string[]) {
     const user = WebSession.getUser(session);
-    const created = await Art.create(user, title, link);
+    let created;
+    if (price && tags) {
+      created = await Art.create(user, title, link, price, tags);
+    } else if (price) {
+      created = await Art.create(user, title, link, price);
+    } else if (tags) {
+      created = await Art.create(user, title, link, 0, tags);
+    } else {
+      created = await Art.create(user, title, link);
+    }
     return { msg: created.msg, post: await Responses.art(created.art) };
   }
 
