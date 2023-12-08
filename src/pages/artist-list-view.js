@@ -3,7 +3,8 @@ import ArtListItem from "../components/art-list-item";
 import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 
 import {
   Typography,
@@ -93,7 +94,7 @@ export default function ArtistListViewPage({ artistName }) {
   };
 
   const handleBulkDelete = () => {
-    for(const item of selected) {
+    for (const item of selected) {
       axios.delete(`/api/art/${item}`);
     }
     setImages(images.filter((item) => !selected.includes(item._id)));
@@ -120,9 +121,13 @@ export default function ArtistListViewPage({ artistName }) {
     setSelected([]); // Clear selection when changing pages
   };
 
-  const currentItems = useMemo(() => images !== undefined ? images.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage) : [], [images, page]);
+  const currentItems = useMemo(
+    () =>
+      images !== undefined
+        ? images.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+        : [],
+    [images, page]
+  );
 
   const memoizedSelected = useMemo(() => selected, [selected]);
 
@@ -145,6 +150,8 @@ export default function ArtistListViewPage({ artistName }) {
           style={{ margin: "20px 0", textAlign: "center" }}
         >
           Hi, {user !== undefined ? user.firstName : artistName}
+          {"   "}
+          <TaskAltIcon fontSize="medium" htmlColor="green" />
         </Typography>
         <Box
           display="flex"
