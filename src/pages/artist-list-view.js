@@ -3,7 +3,8 @@ import ArtListItem from "../components/art-list-item";
 import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 
 import {
   Typography,
@@ -93,7 +94,7 @@ export default function ArtistListViewPage({ artistName }) {
   };
 
   const handleBulkDelete = () => {
-    for(const item of selected) {
+    for (const item of selected) {
       axios.delete(`/api/art/${item}`);
     }
     setImages(images.filter((item) => !selected.includes(item._id)));
@@ -104,11 +105,13 @@ export default function ArtistListViewPage({ artistName }) {
     setEditItem(item);
   };
 
-  const handleEdit = (id, newName, newPrice, newTags) => {
+  const handleEdit = (id, newTitle, newPrice, newTags) => {
+    console.log(id);
+    console.log(images);
     setImages(
       images.map((item) =>
-        item.id === id
-          ? { ...item, name: newName, price: newPrice, tags: newTags }
+        item._id === id
+          ? { ...item, title: newTitle, price: newPrice, tags: newTags }
           : item
       )
     );
@@ -120,9 +123,13 @@ export default function ArtistListViewPage({ artistName }) {
     setSelected([]); // Clear selection when changing pages
   };
 
-  const currentItems = useMemo(() => images !== undefined ? images.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage) : [], [images, page]);
+  const currentItems = useMemo(
+    () =>
+      images !== undefined
+        ? images.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+        : [],
+    [images, page]
+  );
 
   const memoizedSelected = useMemo(() => selected, [selected]);
 
@@ -145,6 +152,8 @@ export default function ArtistListViewPage({ artistName }) {
           style={{ margin: "20px 0", textAlign: "center" }}
         >
           Hi, {user !== undefined ? user.firstName : artistName}
+          {"   "}
+          <TaskAltIcon fontSize="medium" htmlColor="green" />
         </Typography>
         <Box
           display="flex"
@@ -216,9 +225,9 @@ export default function ArtistListViewPage({ artistName }) {
                 label="Image Name"
                 type="text"
                 fullWidth
-                value={editItem.name}
+                value={editItem.title}
                 onChange={(e) =>
-                  setEditItem({ ...editItem, name: e.target.value })
+                  setEditItem({ ...editItem, title: e.target.value })
                 }
               />
 
@@ -270,8 +279,8 @@ export default function ArtistListViewPage({ artistName }) {
               <Button
                 onClick={() =>
                   handleEdit(
-                    editItem.id,
-                    editItem.name,
+                    editItem._id,
+                    editItem.title,
                     editItem.price,
                     editItem.tags
                   )
