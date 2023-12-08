@@ -105,11 +105,13 @@ export default function ArtistListViewPage({ artistName }) {
     setEditItem(item);
   };
 
-  const handleEdit = (id, newName, newPrice, newTags) => {
+  const handleEdit = (id, newTitle, newPrice, newTags) => {
+    console.log(id);
+    console.log(images);
     setImages(
       images.map((item) =>
-        item.id === id
-          ? { ...item, name: newName, price: newPrice, tags: newTags }
+        item._id === id
+          ? { ...item, title: newTitle, price: newPrice, tags: newTags }
           : item
       )
     );
@@ -223,9 +225,9 @@ export default function ArtistListViewPage({ artistName }) {
                 label="Image Name"
                 type="text"
                 fullWidth
-                value={editItem.name}
+                value={editItem.title}
                 onChange={(e) =>
-                  setEditItem({ ...editItem, name: e.target.value })
+                  setEditItem({ ...editItem, title: e.target.value })
                 }
               />
 
@@ -277,8 +279,8 @@ export default function ArtistListViewPage({ artistName }) {
               <Button
                 onClick={() =>
                   handleEdit(
-                    editItem.id,
-                    editItem.name,
+                    editItem._id,
+                    editItem.title,
                     editItem.price,
                     editItem.tags
                   )
