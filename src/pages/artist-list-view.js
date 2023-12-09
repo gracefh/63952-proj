@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ArtListItem from "../components/art-list-item";
 import Navbar from "../components/navbar";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,7 @@ import {
 import { NumericFormat } from "react-number-format";
 import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
+import Alert from "@mui/material/Alert";
 
 const artisticStyles = [
   "Abstract",
@@ -58,6 +59,7 @@ export default function ArtistListViewPage({ artistName }) {
   const [selectAll, setSelectAll] = useState(false);
   const [selectAllLabel, setSelectAllLabel] = useState("Select All");
   const user = useSelector((state) => state.user);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const pageCount = Math.ceil(images.length / itemsPerPage);
   const navigate = useNavigate();
@@ -105,9 +107,7 @@ export default function ArtistListViewPage({ artistName }) {
     setEditItem(item);
   };
 
-  const handleEdit = (id, newTitle, newPrice, newTags) => {
-    console.log(id);
-    console.log(images);
+  const handleEdit = async (id, newTitle, newPrice, newTags) => {
     setImages(
       images.map((item) =>
         item._id === id
@@ -116,6 +116,24 @@ export default function ArtistListViewPage({ artistName }) {
       )
     );
     setEditItem(null);
+
+    const updateItem = {
+      title: newTitle,
+      price: newPrice,
+      tags: newTags,
+    };
+
+    try {
+      const response = await fetch(`/api/art/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ update: updateItem }),
+      });
+    } catch (error) {
+      setErrorMessage("Error updating art");
+    }
   };
 
   const handleChangePage = (event, newPage) => {
@@ -161,6 +179,12 @@ export default function ArtistListViewPage({ artistName }) {
           alignItems="center"
           marginBottom="20px"
         >
+          {/* Error Message */}
+          {errorMessage && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {errorMessage}
+            </Alert>
+          )}
           <Box>
             <Button
               variant="contained"
