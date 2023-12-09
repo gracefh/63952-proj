@@ -16,7 +16,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const ArtCard = ({ card }) => {
-  const imageUrl = `https://source.unsplash.com/random?wallpapers&sig=${card.id}`;
+  const imageUrl = card.link;
   const [open, setOpen] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
@@ -41,9 +41,9 @@ const ArtCard = ({ card }) => {
       />
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h5" component="h2">
-          {card.name}
+          {card.title}
         </Typography>
-        <Typography component="h3">{card.artist}</Typography>
+        <Typography component="h3">{card.author}</Typography>
         <Stack
           direction="row"
           justifyContent="center"
@@ -82,7 +82,7 @@ const ArtCard = ({ card }) => {
           >
             <CloseIcon />
           </IconButton>
-          <img src={imageUrl} alt={card.name} style={{ width: "100%" }} />
+          <img src={imageUrl} alt={card.title} style={{ width: "100%" }} />
         </DialogContent>
       </Dialog>
     </Card>

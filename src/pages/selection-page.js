@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
@@ -12,6 +12,9 @@ import ArtCard from "../components/art-card";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
+import Alert from "@mui/material/Alert";
+import axios from "axios";
+
 import {
   FormControl,
   InputLabel,
@@ -121,19 +124,31 @@ const filterOptions = createFilterOptions({
 });
 
 export default function SelectionPage() {
-  const [images, setImages] = useState(dummyData);
+  const [images, setImages] = useState([]);
   const [selectedStyles, setSelectedStyles] = useState([]);
   const [priceRange, setPriceRange] = useState([0, maxPrice]);
   const [sortOrder, setSortOrder] = useState("");
   const [showStyleFilter, setShowStyleFilter] = useState(false);
   const [showPriceFilter, setShowPriceFilter] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/art");
+        setImages(response.data);
+        console.log(response.data);
+      } catch (error) {
+        setError("Failed to load art pieces. Please try again later.");
+        console.error("Error fetching art data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleStyleChange = (event, value) => {
     setSelectedStyles(value);
-  };
-
-  const handlePriceChange = (event, newValue) => {
-    setPriceRange(newValue);
   };
 
   const handleSortChange = (event) => {
@@ -326,6 +341,12 @@ export default function SelectionPage() {
             </FormControl>
           </Box>
           <Box sx={{ marginTop: 5 }}>
+            {/* Error message display */}
+            {error && (
+              <Container sx={{ mb: 3 }}>
+                <Alert severity="error">{error}</Alert>
+              </Container>
+            )}
             <Grid container spacing={4}>
               {filteredImages.map((card) => (
                 <Grid item key={card.id} xs={12} sm={6} md={4}>

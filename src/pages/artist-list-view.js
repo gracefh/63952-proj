@@ -124,7 +124,7 @@ export default function ArtistListViewPage({ artistName }) {
     };
 
     try {
-      const response = await fetch(`/api/art/${id}`, {
+      await fetch(`/api/art/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
