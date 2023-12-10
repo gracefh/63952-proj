@@ -27,7 +27,8 @@ export default class CartConcept {
   async getByAuthor(author: ObjectId) {
     const cart = await this.carts.readOne({ author });
     if (!cart) {
-      throw new NotFoundError(`Cart authored by ${author} does not exist!`);
+      const cart = await this.carts.createOne({author, contents: []});
+      return cart;
     }
     return cart;
   }
@@ -50,6 +51,15 @@ export default class CartConcept {
   async delete(_id: ObjectId) {
     await this.carts.deleteOne({ _id });
     return { msg: "Cart deleted successfully!" };
+  }
+
+  async deleteItemFromCart(author: ObjectId, art: ObjectId) {
+    const cart = await this.getByAuthor(author);
+    if (cart.contents.includes(art)) {
+      cart.contents = cart.contents.filter((item) => item !== art);
+      return { msg: "Item deleted successfully!" }
+    }
+    return { msg: "Item not in cart" };
   }
 
   async isAuthor(user: ObjectId, _id: ObjectId) {

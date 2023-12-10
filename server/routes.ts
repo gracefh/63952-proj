@@ -129,6 +129,12 @@ class Routes {
     return await Cart.update(cart._id, { contents: [] });
   }
 
+  @Router.delete("/cart/:art")
+  async deleteItemFromCart(session: WebSessionDoc, art: ObjectId) {
+    const user = WebSession.getUser(session);
+    return await Cart.deleteItemFromCart(user, art);
+  }
+
   // ROUTER THINGS
 
   @Router.get("/presignedUrl")
