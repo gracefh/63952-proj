@@ -27,8 +27,8 @@ export default class CartConcept {
   async getByAuthor(author: ObjectId) {
     const cart = await this.carts.readOne({ author });
     if (!cart) {
-      const cart = await this.carts.createOne({author, contents: []});
-      return cart;
+      const _id = await this.carts.createOne({author, contents: []});
+      return await this.carts.readOne({ _id });
     }
     return cart;
   }
