@@ -217,15 +217,6 @@ export default function SelectionPage() {
             >
               Select art pieces to use in training data to add to your cart.
             </Typography>
-            <Stack
-              sx={{ pt: 4 }}
-              direction="row"
-              spacing={2}
-              justifyContent="center"
-            >
-              <Button variant="contained">Checkout</Button>
-              <Button variant="outlined">Clear cart</Button>
-            </Stack>
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">

@@ -1,16 +1,29 @@
 import React, { useContext, useState } from "react";
-import { AppBar, Toolbar, Button, Box, Alert, Typography } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Box,
+  Alert,
+  Typography,
+  IconButton,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
-import { useSelector, useDispatch } from 'react-redux';
-import {setUser} from '../features/user/userSlice';
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "../features/user/userSlice";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Badge from "@mui/material/Badge";
+import { useCart } from "../CartContext";
 
 export default function Navbar() {
   const { setIsLoggedIn } = useContext(AuthContext);
+  const { cartCount } = useCart();
   const navigate = useNavigate();
   const [logoutError, setLogoutError] = useState("");
   const user = useSelector((state) => {
-    return state?.user});
+    return state?.user;
+  });
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -48,17 +61,21 @@ export default function Navbar() {
             </Alert>
           </Box>
         )}
-        <Typography component="h2">
-          Train mART
-        </Typography>
+        <Typography component="h2">Train mART</Typography>
         <Box sx={{ flexGrow: 1 }} />
-        {user!==undefined ? (
+        {user !== undefined ? (
           <>
             <Button color="inherit" onClick={() => navigate("/select-art")}>
               Browse All Art
             </Button>
             <Button color="inherit" onClick={() => navigate("/your-art")}>
               Your Art
+            </Button>
+            <Button color="inherit">
+              <ShoppingCartIcon />
+              <Badge badgeContent={cartCount} color="secondary">
+                <Typography component="h3">CART</Typography>
+              </Badge>
             </Button>
             <Button color="inherit" onClick={handleLogout}>
               Logout
