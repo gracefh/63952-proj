@@ -18,13 +18,14 @@ import { useCart } from "../CartContext";
 
 const ArtCard = ({ card }) => {
   const imageUrl = card.link;
+  const { cartItems, addToCart, removeFromCart } = useCart();
+
+  const allIdsInCart = cartItems.map((item) => item._id);
   const [open, setOpen] = useState(false);
-  const [isAdded, setIsAdded] = useState(false);
+  const [isAdded, setIsAdded] = useState(allIdsInCart.includes(card._id));
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const { addToCart, removeFromCart } = useCart();
 
   const handleAddOrDelete = () => {
     setIsAdded(!isAdded);
