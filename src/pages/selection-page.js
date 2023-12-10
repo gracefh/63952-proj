@@ -14,6 +14,7 @@ import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
+import FloatingCartIcon from "../components/floating-cart-count";
 
 import {
   FormControl,
@@ -348,6 +349,7 @@ export default function SelectionPage() {
           </Box>
         </Container>
       </main>
+      <FloatingCartIcon />
     </ThemeProvider>
   );
 }

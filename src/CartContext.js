@@ -12,7 +12,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (itemId) => {
-    setCartItems(cartItems.filter((item) => item.id !== itemId));
+    setCartItems(cartItems.filter((item) => item._id !== itemId));
   };
 
   const cartCount = cartItems.length;

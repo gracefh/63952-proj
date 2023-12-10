@@ -1,13 +1,5 @@
 import React, { useContext, useState } from "react";
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  Box,
-  Alert,
-  Typography,
-  IconButton,
-} from "@mui/material";
+import { AppBar, Toolbar, Button, Box, Alert, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 import { useSelector, useDispatch } from "react-redux";
@@ -74,7 +66,7 @@ export default function Navbar() {
             <Button color="inherit">
               <ShoppingCartIcon />
               <Badge badgeContent={cartCount} color="secondary">
-                <Typography component="h3">CART</Typography>
+                CART
               </Badge>
             </Button>
             <Button color="inherit" onClick={handleLogout}>

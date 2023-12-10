@@ -31,7 +31,7 @@ const ArtCard = ({ card }) => {
     if (!isAdded) {
       addToCart(card);
     } else {
-      removeFromCart(card.id);
+      removeFromCart(card._id);
     }
   };
 
