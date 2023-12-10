@@ -138,7 +138,6 @@ export default function SelectionPage() {
       try {
         const response = await axios.get("/api/art");
         setImages(response.data);
-        console.log(response.data);
       } catch (error) {
         setError("Failed to load art pieces. Please try again later.");
         console.error("Error fetching art data:", error);
