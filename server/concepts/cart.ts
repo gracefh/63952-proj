@@ -28,7 +28,11 @@ export default class CartConcept {
     const cart = await this.carts.readOne({ author });
     if (!cart) {
       const _id = await this.carts.createOne({author, contents: []});
-      return await this.carts.readOne({ _id });
+      const createdCart = await this.carts.readOne({ _id });
+      if(!createdCart) {
+        throw new NotAllowedError("Could not create cart");
+      }
+      return createdCart
     }
     return cart;
   }
