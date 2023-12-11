@@ -49,6 +49,7 @@ export default class CartConcept {
       return { msg: "Art has already been added to cart!" };
     }
     cart.contents.push(art);
+    await this.carts.updateOne({_id: cart._id}, {contents: cart.contents});
     return { msg: "Art successfully added to cart!" };
   }
 
@@ -60,7 +61,7 @@ export default class CartConcept {
   async deleteItemFromCart(author: ObjectId, art: ObjectId) {
     const cart = await this.getByAuthor(author);
     if (cart.contents.includes(art)) {
-      cart.contents = cart.contents.filter((item) => item !== art);
+      await this.carts.updateOne({_id: cart._id}, {contents: cart.contents.filter((item) => item !== art)});
       return { msg: "Item deleted successfully!" }
     }
     return { msg: "Item not in cart" };

@@ -113,7 +113,11 @@ class Routes {
   @Router.get("/cart")
   async getUserCart(session: WebSessionDoc) {
     const user = WebSession.getUser(session);
-    return await Cart.getByAuthor(user);
+    const cart = await Cart.getByAuthor(user);
+    return {
+      ...cart,
+      contents: await Promise.all(cart.contents.map(artId => Art.getArtById(artId)))
+    };
   }
 
   @Router.patch("/cart/:art")

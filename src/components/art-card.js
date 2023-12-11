@@ -16,25 +16,13 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useCart } from "../CartContext";
 
-const ArtCard = ({ card }) => {
+const ArtCard = ({ card, inCart, handleAddOrDelete }) => {
   const imageUrl = card.link;
-  const { cartItems, addToCart, removeFromCart } = useCart();
-
-  const allIdsInCart = cartItems.map((item) => item._id);
+  const { addToCart, removeFromCart } = useCart();
   const [open, setOpen] = useState(false);
-  const [isAdded, setIsAdded] = useState(allIdsInCart.includes(card._id));
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const handleAddOrDelete = () => {
-    setIsAdded(!isAdded);
-    if (!isAdded) {
-      addToCart(card);
-    } else {
-      removeFromCart(card._id);
-    }
-  };
 
   return (
     <Card
@@ -77,7 +65,7 @@ const ArtCard = ({ card }) => {
           View
         </Button>
         <IconButton size="small" onClick={handleAddOrDelete}>
-          {isAdded ? <DeleteIcon /> : <AddShoppingCartIcon />}
+          {inCart ? <DeleteIcon /> : <AddShoppingCartIcon />}
         </IconButton>
       </CardActions>
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>

@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
 import FloatingCartIcon from "../components/floating-cart-count";
+import { useCart } from "../CartContext";
 
 import {
   FormControl,
@@ -51,71 +52,6 @@ const artisticStyles = [
   "Other",
 ];
 
-const dummyData = [
-  {
-    id: 1,
-    name: "Image1.jpg",
-    price: 1,
-    tags: ["Expressionism"],
-    artist: "Catherine",
-  },
-  {
-    id: 2,
-    name: "Image2.jpg",
-    price: 12,
-    tags: ["Rococo"],
-    artist: "Grace",
-  },
-  {
-    id: 3,
-    name: "Image3.jpg",
-    price: 0.85,
-    tags: ["Baroque", "Abstract"],
-    artist: "Avery",
-  },
-  {
-    id: 4,
-    name: "Image4.jpg",
-    price: 0,
-    tags: ["Pop Art", "Expressionism", "Rococo"],
-    artist: "Taylor",
-  },
-  {
-    id: 5,
-    name: "Image5.jpg",
-    price: 0,
-    tags: ["Impressionism"],
-    artist: "Charlie",
-  },
-  {
-    id: 6,
-    name: "Image6.jpg",
-    price: 0,
-    tags: ["Abstract", "Impressionism"],
-    artist: "Sam",
-  },
-  {
-    id: 7,
-    name: "Image7.jpg",
-    price: 10,
-    tags: ["Rococo", "Abstract"],
-    artist: "Grace",
-  },
-  {
-    id: 8,
-    name: "Image8.jpg",
-    price: 0,
-    tags: ["Surrealism", "My Label"],
-    artist: "Ivy",
-  },
-  {
-    id: 9,
-    name: "Image9.jpg",
-    price: 0,
-    tags: ["Minimalism", "Expressionism"],
-    artist: "Catherine",
-  },
-];
 
 const maxPrice = 1000;
 
@@ -132,6 +68,7 @@ export default function SelectionPage() {
   const [showStyleFilter, setShowStyleFilter] = useState(false);
   const [showPriceFilter, setShowPriceFilter] = useState(false);
   const [error, setError] = useState("");
+  const { cartIds, addToCart, removeFromCart } = useCart();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -146,6 +83,14 @@ export default function SelectionPage() {
 
     fetchData();
   }, []);
+
+  const handleAddOrDelete = (item, inCart) => {
+    if (!inCart) {
+      addToCart(item);
+    } else {
+      removeFromCart(item._id);
+    }
+  };
 
   const handleStyleChange = (event, value) => {
     setSelectedStyles(value);
@@ -339,11 +284,14 @@ export default function SelectionPage() {
               </Container>
             )}
             <Grid container spacing={4}>
-              {filteredImages.map((card) => (
+              {filteredImages.map((card) => {
+                const inCart = cartIds.includes(card._id);
+                return (
                 <Grid item key={card._id} xs={12} sm={6} md={4}>
-                  <ArtCard card={card} />
+                  <ArtCard card={card} inCart={inCart} handleAddOrDelete = {() => handleAddOrDelete(card, inCart)
+                  }/>
                 </Grid>
-              ))}
+              )})}
             </Grid>
           </Box>
         </Container>
