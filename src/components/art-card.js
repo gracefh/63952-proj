@@ -14,11 +14,9 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useCart } from "../CartContext";
 
 const ArtCard = ({ card, inCart, handleAddOrDelete }) => {
   const imageUrl = card.link;
-  const { addToCart, removeFromCart } = useCart();
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);

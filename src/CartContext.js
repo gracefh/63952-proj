@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect, useMemo } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
 
 const CartContext = createContext();
@@ -33,7 +33,7 @@ export const CartProvider = ({ children }) => {
 
   const cartCount = cartItems.length;
 
-  const cartIds = cartItems.map(item => item._id); 
+  const cartIds = cartItems.map((item) => item._id);
 
   return (
     <CartContext.Provider
