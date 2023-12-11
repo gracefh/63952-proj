@@ -63,7 +63,7 @@ export default function Navbar() {
             <Button color="inherit" onClick={() => navigate("/your-art")}>
               Your Art
             </Button>
-            <Button color="inherit">
+            <Button color="inherit" onClick={() => navigate("/cart")}>
               <ShoppingCartIcon />
               <Badge badgeContent={cartCount} color="secondary">
                 CART

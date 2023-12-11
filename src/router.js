@@ -6,6 +6,7 @@ import SignUpPage from "./pages/sign-up";
 import ArtUploadPage from "./pages/art-upload";
 import ArtistListViewPage from "./pages/artist-list-view";
 import SelectionPage from "./pages/selection-page";
+import ShoppingCartPage from "./pages/shopping-cart";
 
 const AppRouter = () => {
   return (
@@ -20,6 +21,7 @@ const AppRouter = () => {
           element={<ArtistListViewPage artistName="Catherine" />}
         />
         <Route path="/select-art" element={<SelectionPage />} />
+        <Route path="/cart" element={<ShoppingCartPage />} />
       </Routes>
     </Router>
   );

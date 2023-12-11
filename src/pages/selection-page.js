@@ -52,7 +52,6 @@ const artisticStyles = [
   "Other",
 ];
 
-
 const maxPrice = 1000;
 
 const filterOptions = createFilterOptions({
@@ -287,11 +286,15 @@ export default function SelectionPage() {
               {filteredImages.map((card) => {
                 const inCart = cartIds.includes(card._id);
                 return (
-                <Grid item key={card._id} xs={12} sm={6} md={4}>
-                  <ArtCard card={card} inCart={inCart} handleAddOrDelete = {() => handleAddOrDelete(card, inCart)
-                  }/>
-                </Grid>
-              )})}
+                  <Grid item key={card._id} xs={12} sm={6} md={4}>
+                    <ArtCard
+                      card={card}
+                      inCart={inCart}
+                      handleAddOrDelete={() => handleAddOrDelete(card, inCart)}
+                    />
+                  </Grid>
+                );
+              })}
             </Grid>
           </Box>
         </Container>
