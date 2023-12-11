@@ -117,7 +117,7 @@ const dummyData = [
   },
 ];
 
-const maxPrice = 100;
+const maxPrice = 1000;
 
 const filterOptions = createFilterOptions({
   matchFrom: "start",
