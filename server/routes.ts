@@ -114,9 +114,19 @@ class Routes {
   async getUserCart(session: WebSessionDoc) {
     const user = WebSession.getUser(session);
     const cart = await Cart.getByAuthor(user);
+    const deletedContents: ObjectId[] = [];
+    const contents = (await Promise.all(cart.contents.map(async artId =>  { 
+        try { return await Responses.art(await Art.getArtById(artId)) } 
+        catch {
+          deletedContents.push(artId);
+          return undefined;
+        } 
+      }
+      ))).filter(item => item !== undefined);
+    await Promise.all(deletedContents.map(artId => Cart.deleteItemFromCart(user, artId)));
     return {
       ...cart,
-      contents: await Promise.all(cart.contents.map(artId => Art.getArtById(artId)))
+      contents: contents
     };
   }
 
@@ -147,7 +157,7 @@ class Routes {
     const ex = fileType;
 
     const Key = `${randomUUID()}.${ex}`;
-  
+
     const s3Params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key,
@@ -160,17 +170,17 @@ class Routes {
       const uploadUrl = await s3Client.getSignedUrl("putObject", s3Params);
 
       console.log("uploadUrl", uploadUrl);
-    
+
       return {
         uploadUrl: uploadUrl,
         key: Key
       }
     }
-    catch(e){
+    catch (e) {
       console.log(e);
     }
-  
-    
+
+
   }
 }
 
