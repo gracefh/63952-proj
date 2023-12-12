@@ -17,6 +17,7 @@ import { AuthContext } from "../AuthContext";
 import Navbar from "../components/navbar";
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '../features/user/userSlice'
+import {useCart } from '../CartContext'
 
 const defaultTheme = createTheme();
 
@@ -26,6 +27,7 @@ export default function SignInPage() {
   const { setIsLoggedIn } = useContext(AuthContext);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const {fetchCartItems} = useCart();
 
   useEffect(() => {
     if(user !== undefined) {
@@ -60,6 +62,7 @@ export default function SignInPage() {
       if (response.ok) {
         setIsLoggedIn(true);
         dispatch(setUser(result.user));
+        await fetchCartItems();
         if (result.isArtist) {
           navigate("/your-art");
         } else {

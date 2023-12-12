@@ -9,17 +9,21 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const response = await axios.get("/api/cart");
-        setCartItems(response.data.contents || []);
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
-
     fetchCartItems();
   }, []);
+
+  const fetchCartItems = async () => {
+    try {
+      const response = await axios.get("/api/cart");
+      setCartItems(response.data.contents || []);
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  }
+
+  const resetCartItems = () => {
+    setCartItems([]);
+  }
 
   const addToCart = async (item) => {
     await axios.patch(`/api/cart/${item._id}`);
@@ -37,7 +41,7 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, cartCount, cartIds }}
+      value={{ cartItems, addToCart, removeFromCart, cartCount, cartIds, fetchCartItems, resetCartItems}}
     >
       {children}
     </CartContext.Provider>

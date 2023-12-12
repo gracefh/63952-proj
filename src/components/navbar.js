@@ -10,7 +10,7 @@ import { useCart } from "../CartContext";
 
 export default function Navbar() {
   const { setIsLoggedIn } = useContext(AuthContext);
-  const { cartCount } = useCart();
+  const { cartCount, resetCartItems } = useCart();
   const navigate = useNavigate();
   const [logoutError, setLogoutError] = useState("");
   const user = useSelector((state) => {
@@ -30,6 +30,7 @@ export default function Navbar() {
         if (response.ok) {
           setIsLoggedIn(false);
           dispatch(setUser(undefined));
+          resetCartItems();
           navigate("/");
         } else {
           setLogoutError("Something went wrong. Please try again.");
@@ -60,9 +61,13 @@ export default function Navbar() {
             <Button color="inherit" onClick={() => navigate("/select-art")}>
               Browse All Art
             </Button>
-            <Button color="inherit" onClick={() => navigate("/your-art")}>
-              Your Art
-            </Button>
+            {user.isArtist === true ? (
+              <Button color="inherit" onClick={() => navigate("/your-art")}>
+                Your Art
+              </Button>
+            ) : (
+              <></>
+            )}
             <Button color="inherit" onClick={() => navigate("/cart")}>
               <ShoppingCartIcon />
               <Badge badgeContent={cartCount} color="secondary">
